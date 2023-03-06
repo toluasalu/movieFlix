@@ -1,9 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
-import { SafeAreaView, StyleSheet, ActivityIndicator,  View} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet,  View, FlatList} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 //import Card
 import { Card, Avatar, Button, Text } from 'react-native-paper';
-import AvatarComponent from './Avatar';
+
 
 
 
@@ -11,7 +12,7 @@ import AvatarComponent from './Avatar';
 
 
 export default function App() {
-  const [isLoading, setLoading] = useState(true);
+  
   const [data, setData] = useState([]);
 
   const getMovies =async () => {
@@ -21,8 +22,6 @@ export default function App() {
       setData(json.movies)
      } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -32,13 +31,15 @@ export default function App() {
 
   return (
     <SafeAreaView style= {styles.container}>
-     <View style={styles.container}>
-    
-      {}
-        
+      <FlatList data = {data}
+                 keyExtractor = {({id}) => id}
+                 renderItem = {({item}) => (
+                  <Text>{item.title}, {item.releaseYear}</Text>
+                 )}    
+       />
       <StatusBar style="auto" />
-     </View>
-    </SafeAreaView>
+   
+     </SafeAreaView>
   );
 }
 
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
